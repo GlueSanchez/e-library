@@ -1,6 +1,7 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -13,50 +14,29 @@ const useStyles = makeStyles((theme) => ({
         width: '25ch',
     },
 }));
-const Inputs = () => {
+const Inputs = ({theme}) => {
     const classes = useStyles();
-
+    console.log(theme)
     return (
         <div className={classes.root}>
-            <div>
-                <TextField
-                    id="standard-full-width"
-                    label="Label"
-                    style={{ margin: 8 }}
-                    placeholder="Placeholder"
-                    helperText="Full width!"
-                    fullWidth
-                    margin="normal"
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                />
-                <TextField
-                    label="None"
-                    id="margin-none"
-                    defaultValue="Default Value"
-                    className={classes.textField}
-                    helperText="Some important text"
-                />
-                <TextField
-                    label="Dense"
-                    id="margin-dense"
-                    defaultValue="Default Value"
-                    className={classes.textField}
-                    helperText="Some important text"
-                    margin="dense"
-                />
-                <TextField
-                    label="Normal"
-                    id="margin-normal"
-                    defaultValue="Default Value"
-                    className={classes.textField}
-                    helperText="Some important text"
-                    margin="normal"
-                />
-            </div>
 
+            <TextField fullWidth
+                       id="outlined-search"
+                       label="Автор"
+                       type="search"
+                       variant="outlined"
+                       margin="normal"
+            />
+            <TextField fullWidth
+                       id="outlined-search"
+                       label="Назва документа"
+                       type="search"
+                       variant="outlined"
+                       margin="normal"/>
 
+            <Button type={'submit'}
+                    variant={'contained'}
+                    color={'primary'}>Пошук</Button>
         </div>
     );
 };
