@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {withStyles, makeStyles} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -7,6 +7,9 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import {useDispatch, useSelector} from "react-redux";
+import SearchTableRows from "./SearchTableRows";
+import Notification from "./Notification";
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -26,53 +29,64 @@ const StyledTableRow = withStyles((theme) => ({
     },
 }))(TableRow);
 
-function createData(name, calories, fat, carbs, protein) {
-    return {name, calories, fat, carbs, protein};
-}
-
-const rows = [
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
-
 const useStyles = makeStyles({
     table: {
         width: '100%',
     },
 });
 const OutputData = () => {
+    const dispatch = useDispatch()
     const classes = useStyles();
+    const books = useSelector((state) => state.books.searchedBook);
+    const likedBooks = useSelector(state => state.likedBooks);
+    const [notify, setNotify] = useState({
+        isOpen: false, message: '', type: ''
+    });
+    const handleAddToWatchLater = (id) => {
+        let likedBook = books.filter(book => book.id === id);
+        // console.log(...likedBook)
+        if (likedBooks.some(book => book.id === id)) {
+            setNotify({
+                isOpen:true, message: 'Ця книга вже є в вашому списку', type: 'error'
+            });
 
+
+        } else {
+            dispatch({type: 'ADD_LIKED_BOOKS', likedBooks: likedBook});
+            setNotify({
+                isOpen:true, message: 'Успішно додано до списку', type: 'success'
+            });
+
+        }
+    };
+    useEffect(() => {
+        console.log(likedBooks)
+    }, [likedBooks]);
     return (
-        <TableContainer component={Paper}>
-            <Table className={classes.table} aria-label="customized table">
-                <TableHead>
-                    <TableRow>
-                        <StyledTableCell>Dessert (100g serving)</StyledTableCell>
-                        <StyledTableCell align="right">Calories</StyledTableCell>
-                        <StyledTableCell align="right">Fat&nbsp;(g)</StyledTableCell>
-                        <StyledTableCell align="right">Carbs&nbsp;(g)</StyledTableCell>
-                        <StyledTableCell align="right">Protein&nbsp;(g)</StyledTableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {rows.map((row) => (
-                        <StyledTableRow key={row.name}>
-                            <StyledTableCell component="th" scope="row">
-                                {row.name}
-                            </StyledTableCell>
-                            <StyledTableCell align="right">{row.calories}</StyledTableCell>
-                            <StyledTableCell align="right">{row.fat}</StyledTableCell>
-                            <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-                            <StyledTableCell align="right">{row.protein}</StyledTableCell>
-                        </StyledTableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
+        <>
+            <Notification notify={notify} setNotify={setNotify}/>
+            {books.length >= 1
+                ? <TableContainer component={Paper}>
+                    <Table className={classes.table} aria-label="customized table">
+                        <TableHead>
+                            <TableRow>
+                                <StyledTableCell>Title</StyledTableCell>
+                                <StyledTableCell align="center">Author</StyledTableCell>
+                                <StyledTableCell align="center">Year</StyledTableCell>
+                                <StyledTableCell align="center">Lang</StyledTableCell>
+                                <StyledTableCell align="center"></StyledTableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {books.map((row) => (
+                                <SearchTableRows {...{row, handleAddToWatchLater}}/>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+                : 'Введіть потрібні значення для пошуку'
+            }
+        </>
     );
 };
 

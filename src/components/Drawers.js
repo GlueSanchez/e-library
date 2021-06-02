@@ -23,12 +23,12 @@ const Drawers = ({handleDrawerClose, classes, open, theme}) => {
             color: 'red',
             backgroundColor: 'red'
         },
+
         link: {
             textDecoration: 'none',
             color: 'black'
         }
     };
-    console.log()
     return (
         <Drawer
             variant="permanent"
@@ -59,8 +59,8 @@ const Drawers = ({handleDrawerClose, classes, open, theme}) => {
                              color: theme.palette.success.main,
                          }}>
                     <ListItem button>
-                        <ListItemIcon> <HomeIcon/></ListItemIcon>
-                        <ListItemText>Home </ListItemText>
+                        <ListItemIcon> <HomeIcon /></ListItemIcon>
+                        <ListItemText>Пошук </ListItemText>
                     </ListItem>
                 </NavLink>
 
@@ -72,7 +72,7 @@ const Drawers = ({handleDrawerClose, classes, open, theme}) => {
                          }}>
                     <ListItem button>
                         <ListItemIcon> <ListIcon/></ListItemIcon>
-                        <ListItemText>My list</ListItemText>
+                        <ListItemText>Переглянути пізніше</ListItemText>
                     </ListItem>
                 </NavLink>
 
@@ -84,21 +84,21 @@ const Drawers = ({handleDrawerClose, classes, open, theme}) => {
                          }}>
                     <ListItem button>
                         <ListItemIcon> <EqualizerIcon/></ListItemIcon>
-                        <ListItemText>Stats</ListItemText>
+                        <ListItemText>Статистика</ListItemText>
                     </ListItem>
                 </NavLink>
 
-                <NavLink exact to={'/themes'}
-                         style={c.link}
-                         className={'navLink'}
-                         activeStyle={{
-                             color: theme.palette.success.main
-                         }}>
-                    <ListItem button>
-                        <ListItemIcon> <ColorLensIcon/></ListItemIcon>
-                        <ListItemText>Themes</ListItemText>
-                    </ListItem>
-                </NavLink>
+                {/*<NavLink exact to={'/themes'}*/}
+                {/*         style={c.link}*/}
+                {/*         className={'navLink'}*/}
+                {/*         activeStyle={{*/}
+                {/*             color: theme.palette.success.main*/}
+                {/*         }}>*/}
+                {/*    <ListItem button>*/}
+                {/*        <ListItemIcon> <ColorLensIcon/></ListItemIcon>*/}
+                {/*        <ListItemText>Themes</ListItemText>*/}
+                {/*    </ListItem>*/}
+                {/*</NavLink>*/}
 
                 <NavLink exact to={'/help'}
                          style={c.link}
@@ -108,7 +108,7 @@ const Drawers = ({handleDrawerClose, classes, open, theme}) => {
                          }}>
                     <ListItem button>
                         <ListItemIcon> <HelpIcon/></ListItemIcon>
-                        <ListItemText>Help</ListItemText>
+                        <ListItemText>Допомога</ListItemText>
                     </ListItem>
                 </NavLink>
 

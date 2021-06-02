@@ -1,104 +1,185 @@
-import React, {useEffect, useState} from 'react';
-import axios from "axios";
-import {Button, Card, CardContent, TextField} from "@material-ui/core";
-import Paper from "@material-ui/core/Paper";
-import Table from "@material-ui/core/Table";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import TableBody from "@material-ui/core/TableBody";
-import TableContainer from "@material-ui/core/TableContainer";
-import {withStyles} from "@material-ui/core/styles";
-import TableCell from "@material-ui/core/TableCell";
+import React from 'react';
+import {
+    Card,
+    CardContent,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+    makeStyles,
+    Typography
+} from "@material-ui/core";
+import List from "@material-ui/core/List";
+import LinkIcon from '@material-ui/icons/Link';
 
-const StyledTableCell = withStyles((theme) => ({
-    head: {
-        backgroundColor: theme.palette.common.black,
-        color: theme.palette.common.white,
-    },
-    body: {
-        fontSize: 14,
-    },
-}))(TableCell);
-
-const StyledTableRow = withStyles((theme) => ({
+const useStyles = makeStyles({
     root: {
-        '&:nth-of-type(odd)': {
-            backgroundColor: theme.palette.action.hover,
-        },
+        width: '100%',
     },
-}))(TableRow);
+    media: {
+        height: 140,
+    },
+});
 
-const Help = ({classes}) => {
-    const [movies, setMovies] = useState([]);
-    const [inpVal, setInpVal] = useState('');
-    let handle = (e) => {
-        setInpVal(e.target.value);
-        // console.log(e.target.value)
-    };
+const classificators = [
+    {name: '  ББК'},
+    {name: ' Генеральна систематична картотека з лісового госп-ва, лісової та д/о пром-ті'},
+    {name: ' Каталог навчальних курсів'},
+    {name: '  Ключові слова'},
+    {name: '  Навчальні дисципліни'},
+    {name: '  Персоналії'},
+    {name: '  Праці співробітників НЛТУ'},
+    {name: '  Тематичні картотеки'},
+    {name: '  УДК'},
+    {name: '  Фонд рідкісної книги'},
+    {name: '  Художня література'},
+];
+const bbk = [
+    {name: `Міждисциплінарні знання.Природничі науки.Техніка.Технічні науки`},
+    {name: `Сільське і лісове господарство.Сільськогосподарські і лісогосподарські науки.Присадибне господарство.Агрономія`},
+    {name: `Охорона здоров'я. Медичні науки`},
+    {name: `Суспільні науки в цілому`},
+    {name: `Історія.Історичні науки`},
+    {name: `Економіка.Економічні науки`},
+    {name: `Політика.Політичні науки`},
+    {name: `Держава і право.Юридичні науки`},
+    {name: `Військова справа.Військова наука.Культура.Наука.Освіта.Культура.Культурне будівництво.Наука.Наукознавство`},
+    {name: `Освіта.Педагогічна наука`},
+    {name: `Фізична культура і спорт`},
+    {name: `Засоби масової інформації(Преса, радіомовлення, телебачення)`},
+    {name: `Культурно - освітня робота`},
+    {name: `Бібліотечна справа.Бібліотекознавство.Бібліографознавство.Охорона пам'яток історії і культури. Музейна справа. Архівна справа.`},
+    {name: `Філологічні науки в цілому`},
+    {name: `Мовознавство`},
+    {name: `Фольклор.Фольклористика`},
+    {name: `Літературознавство`},
+    {name: `Художня література`},
+    {name: `Мистецтвознавство`},
+    {name: `Релігія.Містика.Вільнодумство`},
+    {name: `Філософія`},
+    {name: `Психологія`},
+    {name: `Література універсального змісту`},
+];
+const Help = () => {
+    const classes = useStyles();
 
-    let request = () => {
-        const options = {
-            method: 'GET',
-            url: 'https://movie-database-imdb-alternative.p.rapidapi.com/',
-            params: {s: inpVal, page: '1', r: 'json'}, headers: {
-                'x-rapidapi-key': 'a659ecedcdmsh6d39b8ebc48bc1ap1db587jsn5be2c9d2dbaa',
-                'x-rapidapi-host': 'movie-database-imdb-alternative.p.rapidapi.com'
-            }
-        };
-        axios.request(options).then((response) => {
-            let getData = response.data.Search;
-            console.log(response)
-            setMovies([...movies, ...getData]);
-            setInpVal('');
-        });
-    };
 
     return (
         <>
-            <Card className={classes.root} variant="outlined">
+            <h2>Допомога</h2>
+                       <Card className={classes.root} variant="outlined">
                 <CardContent className={classes.cardContent}>
-                    <form noValidate autoComplete="off">
-                        <TextField id="standard-basic" label="Standard" onChange={handle} value={inpVal}/>
-                        <Button onClick={request} >Search</Button>
-                    </form>
+                    <Typography gutterBottom variant="h5" component="h2">
+                        Правила користування пошуковою системою
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary" component="p">
+                        За допомогою пошукової системи можна здійснювати пошук документів та переглядати інформацію про
+                        них. Шукати документи можна як за атрибутами (автор, назва, інші вихідні дані) так і за
+                        належністю документів до тієї чи іншої теми.
+                    </Typography>
                 </CardContent>
-            </Card>
-            <Button onClick={() => console.log(movies)}>click</Button>
-            <Card className={classes.root} variant="outlined">
                 <CardContent className={classes.cardContent}>
+                    <Typography gutterBottom variant="h5" component="h2">
+                        Пошук в класифікаторах
+                    </Typography>
+                    <Typography gutterBottom variant="body2" color="textSecondary" component="p">
+                        Класифікатори призначені для того, щоб полегшити пошук необхідних документів. Рубрики у
+                        класифікаторах називаються темами. Кожна тема має підтеми.
 
-                    {
-                        movies.length > 0
-                            ? <TableContainer component={Paper}>
-                                <Table className={classes.table} aria-label="customized table">
-                                    <TableHead>
-                                        <TableRow>
-                                            <StyledTableCell>Title</StyledTableCell>
-                                            <StyledTableCell align="right">Year</StyledTableCell>
-                                            <StyledTableCell align="right">Type</StyledTableCell>
-                                            <StyledTableCell align="right">imdbID</StyledTableCell>
-                                            <StyledTableCell align="right">Poster</StyledTableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {movies.map((movie) => (
-                                            <StyledTableRow key={movie.imdbID}>
-                                                <StyledTableCell component="th" scope="row">
-                                                    {movie.Title}
-                                                </StyledTableCell>
-                                                <StyledTableCell align="right">{movie.Year}</StyledTableCell>
-                                                <StyledTableCell align="right">{movie.Type}</StyledTableCell>
-                                                <StyledTableCell align="right">{movie.imdbID}</StyledTableCell>
-                                                <StyledTableCell align="center"><img width={100} height={150} src={`${movie.Poster}`} /></StyledTableCell>
-                                            </StyledTableRow>
-                                        ))}
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
-                            : <>Ведіть потрібні значення</>
-                    }
+                        Кожний документ може бути віднесений до однієї або кількох тем, і у будь-якій з них його можна
+                        знайти.
+
+                        У системі створено класифікатори, будь-яким з них можна скористатися для пошуку необхідних
+                        документів, вибравши опцію на екрані одержимо повний їх перелік:
+                    </Typography>
+                    <Typography gutterBottom variant="h5" component="h2">
+                        Класифікатори:
+                    </Typography>
+                    <List gutterBottom>
+                        {classificators.map(name => (
+                                <ListItem>
+                                    <ListItemIcon>
+                                        <LinkIcon/>
+                                    </ListItemIcon>
+                                    <ListItemText primary={name.name}/>
+                                </ListItem>
+                            )
+                        )}
+                    </List>
+                    <Typography gutterBottom variant="body2" color="textSecondary" component="p">
+                        При виборі певного каталогу будуть відображені теми, які містяться в ньому. Наприклад, вибираємо
+                        каталог 'ББК', і бачимо всі теми, якими можна скористатися для пошуку документа:
+                    </Typography>
+                    <Typography gutterBottom variant="h5" component="h2">
+                        ББК:
+                    </Typography>
+                    <List gutterBottom>
+                        {bbk.map(name => (
+                                <ListItem>
+                                    <ListItemText primary={name.name}/>
+                                </ListItem>
+                            )
+                        )}
+                    </List>
+                    <Typography variant="body2" color="textSecondary" component="p">
+                        Вибравши одну з тем, відкриваємо її, тобто виводимо всі підтеми і т.д. Продовжуйте пошук таким
+                        чином доти, доки не знайдете потрібну тему або не зупинитися на темі, що вже не розкривається,
+                        бо не має підтем. Якщо таким чином знайти потрібну тему не вдається, спробуйте виконати пошук
+                        теми за контекстом.
+
+                        Під розкритою темою або класифікатором знаходиться меню, в якому можна вибрати необхідне
+                        обмеження для документів ( 'Всі документи теми' або 'Всі документи теми з підтемами'). Якщо
+                        треба відмовитись від пошуку в тематичному каталозі, виберіть умову 'Без обмежень' або перейдіть
+                        на 'Класифікатори'. </Typography>
                 </CardContent>
             </Card>
+            {/*<Card className={classes.root} variant="outlined">*/}
+            {/*    <CardContent className={classes.cardContent}>*/}
+            {/*        /!*<form noValidate autoComplete="off">*!/*/}
+            {/*        /!*    <TextField id="standard-basic" label="Standard" onChange={handle} value={inpVal}/>*!/*/}
+            {/*        /!*    <Button onClick={reper}>post</Button>*!/*/}
+            {/*        */}
+            {/*        /!*    <Button onClick={request}>request</Button>*!/*/}
+            {/*        /!*    <Button onClick={deleteReq}>deleteReq</Button>*!/*/}
+            {/*        /!*</form>*!/*/}
+            {/*    </CardContent>*/}
+            {/*</Card>*/}
+            {/*<Button onClick={() => console.log(movies)}>click</Button>*/}
+            {/*<Card className={classes.root} variant="outlined">*/}
+            {/*    <CardContent className={classes.cardContent}>*/}
+
+            {/*        {*/}
+            {/*            movies.length > 0*/}
+            {/*                ? <TableContainer component={Paper}>*/}
+            {/*                    <Table className={classes.table} aria-label="customized table">*/}
+            {/*                        <TableHead>*/}
+            {/*                            <TableRow>*/}
+            {/*                                <StyledTableCell>Title</StyledTableCell>*/}
+            {/*                                <StyledTableCell align="right">Year</StyledTableCell>*/}
+            {/*                                <StyledTableCell align="right">author</StyledTableCell>*/}
+            {/*                                <StyledTableCell align="right">imdbID</StyledTableCell>*/}
+            {/*                                <StyledTableCell align="right">WHO IS THIS</StyledTableCell>*/}
+            {/*                            </TableRow>*/}
+            {/*                        </TableHead>*/}
+            {/*                        <TableBody>*/}
+            {/*                            {movies.map((movie) => (*/}
+            {/*                                <StyledTableRow key={movie.id}>*/}
+            {/*                                    <StyledTableCell component="th" scope="row">*/}
+            {/*                                        {movie.title}*/}
+            {/*                                    </StyledTableCell>*/}
+            {/*                                    <StyledTableCell align="right">{movie.year}</StyledTableCell>*/}
+            {/*                                    <StyledTableCell align="right">{movie.author}</StyledTableCell>*/}
+            {/*                                    <StyledTableCell align="right">{movie.id}</StyledTableCell>*/}
+            {/*                                    <StyledTableCell*/}
+            {/*                                        align="center">{movie.ukrainian_author ? 'top' : 'loh'}</StyledTableCell>*/}
+            {/*                                </StyledTableRow>*/}
+            {/*                            ))}*/}
+            {/*                        </TableBody>*/}
+            {/*                    </Table>*/}
+            {/*                </TableContainer>*/}
+            {/*                : <>Ведіть потрібні значення</>*/}
+            {/*        }*/}
+            {/*    </CardContent>*/}
+            {/*</Card>*/}
         </>
     );
 };
